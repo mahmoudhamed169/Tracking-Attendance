@@ -142,8 +142,8 @@ const sign_up = async (req, res) => {
                  <div class="myDiv">
                     <h2>New Rigitration</h2>                    
                     <h3>${fristName} ${lastName} with this email ${email} is tring to make Registraton</h3>
-                    <a href="http://localhost:3000/verifyUser/${token}">Approve!</a>
-                    <a href="http://localhost:3000/unverifyUser/${token}">Reject!</a>
+                    <a href="https://app-atms.onrender.com/verifyUser/${token}">Approve!</a>
+                    <a href="https://app-atms.onrender.com/unverifyUser/${token}">Reject!</a>
                     
                   </div>
   
