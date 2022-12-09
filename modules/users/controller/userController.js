@@ -5,10 +5,9 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const sendGridTransport = require("nodemailer-sendgrid-transport");
 
-const getAllUsers = async (req, res) => {
-  const users = await User.find({}).select("-password");
-  // const users = await User.find({}).populate("department").select("-password");
-  res.json({ massege: "allUsers", users });
+const getAllUsers = async (req, res) => {  
+  const users = await User.find({}).populate("department").select("-password");
+  res.json({ message: "allUsers", users });
 };
 
 // create reusable transporter object using the default SMTP transport
@@ -30,7 +29,7 @@ const verifyUser = async (req, res) => {
     const decoded = jwt.verify(req.params.token, "shhhhh");
     const user = await User.findOne({ email: decoded.email });
     if (!user) {
-      res.status(StatusCodes.BAD_REQUEST).json({ massage: "invalid email" });
+      res.status(StatusCodes.BAD_REQUEST).json({ message: "invalid email" });
     } else {
       await User.updateOne({ email: decoded.email }, { verified: true });
 
@@ -74,7 +73,7 @@ const UnverifyUser = async (req, res) => {
     const decoded = jwt.verify(req.params.token, "shhhhh");
     const user = await User.findOne({ email: decoded.email });
     if (!user) {
-      res.status(StatusCodes.BAD_REQUEST).json({ massage: "invalid email" });
+      res.status(StatusCodes.BAD_REQUEST).json({ message: "invalid email" });
     } else {
       await User.deleteOne({ email: decoded.email });
 
@@ -119,7 +118,7 @@ const sign_up = async (req, res) => {
     const user = await User.findOne({ email });
     if (user) {
       res.status(StatusCodes.BAD_REQUEST).json({
-        massege: "email is already existes",
+        message: "email is already existes",
       });
     } else {
       let newUser = new User({
@@ -184,7 +183,7 @@ const sign_up = async (req, res) => {
   } catch (error) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ massge: "error", error });
+      .json({ message: "error", error });
     console.log(error);
   }
 };
@@ -194,10 +193,10 @@ const sign_in = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      res.status(StatusCodes.BAD_REQUEST).json({ massege: "Invalid Email" });
+      res.status(StatusCodes.BAD_REQUEST).json({ message: "Invalid Email" });
     } else {
       if (!user.verified) {
-        res.status(StatusCodes.BAD_REQUEST).json({ massage: "Sorry..... your account has not been activated" });
+        res.status(StatusCodes.BAD_REQUEST).json({ message: "Sorry..... your account has not been activated" });
       } else {
         const match = await bcrypt.compare(password, user.password);
         if (match) {
@@ -207,6 +206,7 @@ const sign_in = async (req, res) => {
               role: user.role,
               name: user.fristName + " " + user.lastName,              
               department: user.department,
+
             },
             "shhhhh"
           );
@@ -219,7 +219,7 @@ const sign_in = async (req, res) => {
             },
           });
         } else {
-          res.status(StatusCodes.BAD_REQUEST).json({ massege: "password is not corrected" });
+          res.status(StatusCodes.BAD_REQUEST).json({ message: "password is not corrected" });
         }
       }
     }

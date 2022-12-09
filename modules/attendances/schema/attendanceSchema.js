@@ -2,30 +2,20 @@ const mongoose = require("mongoose");
 
 const attendanceSchema = new mongoose.Schema(
   {
-    
-    user :{type :mongoose.Schema.Types.ObjectID , ref : "users"}  ,
-    attendance:[{
+    user: { type: mongoose.Schema.Types.ObjectID, ref: "users" },
+    attendance: [
+      {
+        date: { type: Date },
+        userName: { type: String },
+        entry: { type: Date },
+        exit: { type: Date },
+        requestToLeave :{type: Boolean}
+      },
+    ],
+  },
+  {
+    usePushEach: true,
+  }
+);
 
-        date:{
-             type:Date,             
-         },
-         entry:{type:Date},
-         exit:{
-             time:{
-                 type:Date
-             },
-             // 1 - General
-             // 2 - Vacation
-             // 3 - Doctor
-             reason:Number
-         }
-        
- 
-    }]
- }, {
-   usePushEach: true
-})
-
-
-
-module.exports = attendanceSchema ; 
+module.exports = attendanceSchema;
