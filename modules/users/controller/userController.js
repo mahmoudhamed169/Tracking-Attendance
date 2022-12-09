@@ -29,7 +29,7 @@ const verifyUser = async (req, res) => {
     const decoded = jwt.verify(req.params.token, "shhhhh");
     const user = await User.findOne({ email: decoded.email });
     if (!user) {
-      res.status(StatusCodes.RESET_CONTENT).json({ message: "invalid email" });
+      res.status(StatusCodes.ACCEPTED).json({ message: "invalid email" });
     } else {
       await User.updateOne({ email: decoded.email }, { verified: true });
 
@@ -73,7 +73,7 @@ const UnverifyUser = async (req, res) => {
     const decoded = jwt.verify(req.params.token, "shhhhh");
     const user = await User.findOne({ email: decoded.email });
     if (!user) {
-      res.status(StatusCodes.RESET_CONTENT).json({ message: "invalid email" });
+      res.status(StatusCodes.ACCEPTED).json({ message: "invalid email" });
     } else {
       await User.deleteOne({ email: decoded.email });
 
@@ -117,7 +117,7 @@ const sign_up = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (user) {
-      res.status(StatusCodes.RESET_CONTENT).json({
+      res.status(StatusCodes.ACCEPTED).json({
         message: "email is already existes",
       });
     } else {
@@ -193,10 +193,10 @@ const sign_in = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      res.status(StatusCodes.RESET_CONTENT).json({ message: "Invalid Email" });
+      res.status(StatusCodes.ACCEPTED).json({ message: "Invalid Email" });
     } else {
       if (!user.verified) {
-        res.status(StatusCodes.RESET_CONTENT).json({ message: "Sorry..... your account has not been activated" });
+        res.status(StatusCodes.ACCEPTED).json({ message: "Sorry..... your account has not been activated" });
       } else {
         const match = await bcrypt.compare(password, user.password);
         if (match) {
@@ -219,7 +219,7 @@ const sign_in = async (req, res) => {
             },
           });
         } else {
-          res.status(StatusCodes.RESET_CONTENT).json({ message: "password is not corrected" });
+          res.status(StatusCodes.ACCEPTED).json({ message: "password is not corrected" });
         }
       }
     }

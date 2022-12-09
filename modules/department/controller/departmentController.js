@@ -26,7 +26,7 @@ const addNewDepartment = async (req, res) => {
     try {
       const department = await Department.findOne({ departmentName });
       if (department) {
-        res.status(StatusCodes.BAD_REQUEST).json({
+        res.status(StatusCodes.ACCEPTED).json({
           massege: "department is already existes",
         });
       } else {
