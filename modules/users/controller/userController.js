@@ -204,7 +204,8 @@ const sign_in = async (req, res) => {
           var token = jwt.sign(
             {
               _id: user._id,
-              role: user.role,              
+              role: user.role,
+              name: user.fristName + " " + user.lastName,              
               department: user.department,
             },
             "shhhhh"
@@ -218,7 +219,7 @@ const sign_in = async (req, res) => {
             },
           });
         } else {
-          res.json({ massge: "password is not corrected" });
+          res.status(StatusCodes.BAD_REQUEST).json({ massege: "password is not corrected" });
         }
       }
     }
