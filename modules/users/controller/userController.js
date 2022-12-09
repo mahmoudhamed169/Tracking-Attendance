@@ -193,10 +193,10 @@ const sign_in = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      res.status(StatusCodes.ACCEPTED).json({ message: "Invalid Email" });
+      res.status(StatusCodes.ACCEPTED).json({ status :false  , message: "Invalid Email" });
     } else {
       if (!user.verified) {
-        res.status(StatusCodes.ACCEPTED).json({ message: "Sorry..... your account has not been activated" });
+        res.status(StatusCodes.ACCEPTED).json({ status :false ,message: "Sorry..... your account has not been activated" });
       } else {
         const match = await bcrypt.compare(password, user.password);
         if (match) {
@@ -211,6 +211,7 @@ const sign_in = async (req, res) => {
             "shhhhh"
           );
           res.status(StatusCodes.OK).json({
+            status :true ,
             token,
             user: {
               name: user.fristName + " " + user.lastName,
@@ -219,7 +220,7 @@ const sign_in = async (req, res) => {
             },
           });
         } else {
-          res.status(StatusCodes.ACCEPTED).json({ message: "password is not corrected" });
+          res.status(StatusCodes.ACCEPTED).json({ status :false , message: "password is not corrected" });
         }
       }
     }
