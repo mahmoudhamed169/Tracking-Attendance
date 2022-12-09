@@ -25,7 +25,7 @@ const check_In = async (req, res) => {
       if (today > lastCheckInTimestamp) {
         userAttendance.attendance.push(data);
         await userAttendance.save();
-        res.json({ message: "success....You have been signed in for today" });
+        res.status(statusCodes.OK).json({ message: "success....You have been signed in for today" });
       } else {
         res.json({
           message: "error....You have been signed in for today aleady",
@@ -38,7 +38,7 @@ const check_In = async (req, res) => {
       });
       await newAttendance.save();
       // console.log(newAttendance)
-      res.json({ message: "success....You have been signed in for today" });
+      res.status(statusCodes.CREATED).json({ message: "success....You have been signed in for today" });
     }
   } catch (error) {
     res
@@ -63,7 +63,7 @@ const check_Out =  async(req, res) =>{
         const lastCheckIn = userAttendance.attendance[userAttendance.attendance.length - 1];
         const lastCheckInTimestamp = lastCheckIn.date.toISOString().split("T")[0];
         if (today != lastCheckInTimestamp) {
-          res.status(StatusCodes.BAD_REQUEST).json({message : "You didn't check in  today"});
+          res.status(StatusCodes.RESET_CONTENT).json({message : "You didn't check in  today"});
         }
         else{
           if (exit.getHours()>=14  || lastCheckIn.requestToLeave == true ){
@@ -71,19 +71,19 @@ const check_Out =  async(req, res) =>{
             res.status(StatusCodes.ACCEPTED).json({message : "success','You have been successfully check out"});
           }
           else{
-            res.status(StatusCodes.BAD_REQUEST).json({message : "You can't leave now"});
+            res.status(StatusCodes.RESET_CONTENT).json({message : "You can't leave now"});
           }
 
         }
       }
       else {
-        res.status(StatusCodes.BAD_REQUEST).json({message : "error','You do not have an attendance entry "});
+        res.status(StatusCodes.RESET_CONTENT).json({message : "error','You do not have an attendance entry "});
   
       }
       
     }
     else {
-      res.status(StatusCodes.BAD_REQUEST).json({message : "invalied Attendance"});
+      res.status(StatusCodes.RESET_CONTENT).json({message : "invalied Attendance"});
 
     }
     

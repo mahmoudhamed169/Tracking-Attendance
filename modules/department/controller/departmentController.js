@@ -32,7 +32,7 @@ const addNewDepartment = async (req, res) => {
       } else {
         let newDepartment = new Department({ departmentName });
         await newDepartment.save();
-        res.json({ massege: "Added success", Department: newDepartment });
+        res.status(StatusCodes.CREATED).jsonjson({ massege: "Added success", Department: newDepartment });
       }
     } catch (error) {
       res
