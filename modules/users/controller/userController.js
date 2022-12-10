@@ -114,7 +114,7 @@ const UnverifyUser = async (req, res) => {
 };
 
 const sign_up = async (req, res) => {
-  let { fristName, lastName, email, password, role } = req.body;
+  let { fristName, lastName, email, password} = req.body;
   try {
     const user = await User.findOne({ email });
     if (user) {
@@ -225,7 +225,7 @@ const sign_in = async (req, res) => {
             user: {
               name: user.fristName + " " + user.lastName,
               email: user.email,
-              department: user.department,
+              role: user.role,
               departmentName: user.department_name,
             },
           });
