@@ -117,7 +117,7 @@ const sign_up = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (user) {
-      res.status(StatusCodes.ACCEPTED).json({
+      res.status(StatusCodes.ACCEPTED).json({ status :false,
         message: "email is already existes",
       });
     } else {
@@ -178,7 +178,7 @@ const sign_up = async (req, res) => {
         console.log("Message %s sent: %s", info.messageId, info.response);
         // res.status(StatusCodes.CREATED).json({ message: "check your email" });
       });
-      res.status(StatusCodes.CREATED).json({ message: "check your email" });
+      res.status(StatusCodes.CREATED).json({status : true , message: "check your email" });
     }
   } catch (error) {
     res
