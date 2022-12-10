@@ -7,8 +7,8 @@ const { StatusCodes } = require("http-status-codes");
 const getAllDepartment = async (req, res) => {
   try {
     if (theUser.role == "admin") {
-      const departments = await Department.find({}).populate("createdBy");
-      res.json({ message: "All Department", data: departments });
+      const departments = await Department.findALL({});
+      res.status(StatusCodes.ACCEPTED).json({ status:true ,message: "All Department", data: departments });
     } else {
       res.status(StatusCodes.UNAUTHORIZED).json({ message: "UNAUTHORIZED" });
     }

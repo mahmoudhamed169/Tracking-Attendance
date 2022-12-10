@@ -4,8 +4,9 @@ const { StatusCodes } = require("http-status-codes");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const sendGridTransport = require("nodemailer-sendgrid-transport");
+const Department = require("../../department/model/departmentModel");
 
-const getAllUsers = async (req, res) => {  
+const getAllUsers = async (req, res) => {
   const users = await User.find({}).populate("department").select("-password");
   res.json({ message: "allUsers", users });
 };
@@ -117,16 +118,16 @@ const sign_up = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (user) {
-      res.status(StatusCodes.ACCEPTED).json({ status :false,
-        message: "email is already existes",
-      });
+      res
+        .status(StatusCodes.ACCEPTED)
+        .json({ status: false, message: "email is already existes" });
     } else {
       let newUser = new User({
         fristName,
         lastName,
         email,
         password,
-        role,
+        // role,
       });
       await newUser.save();
       const token = jwt.sign({ email }, "shhhhh");
@@ -178,7 +179,9 @@ const sign_up = async (req, res) => {
         console.log("Message %s sent: %s", info.messageId, info.response);
         // res.status(StatusCodes.CREATED).json({ message: "check your email" });
       });
-      res.status(StatusCodes.CREATED).json({status : true , message: "check your email" });
+      res
+        .status(StatusCodes.CREATED)
+        .json({ status: true, message: "check your email" });
     }
   } catch (error) {
     res
@@ -193,10 +196,17 @@ const sign_in = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      res.status(StatusCodes.ACCEPTED).json({ status :false  , message: "Invalid Email" });
+      res
+        .status(StatusCodes.ACCEPTED)
+        .json({ status: false, message: "Invalid Email" });
     } else {
       if (!user.verified) {
-        res.status(StatusCodes.ACCEPTED).json({ status :false ,message: "Sorry..... your account has not been activated" });
+        res
+          .status(StatusCodes.ACCEPTED)
+          .json({
+            status: false,
+            message: "Sorry..... your account has not been activated",
+          });
       } else {
         const match = await bcrypt.compare(password, user.password);
         if (match) {
@@ -204,25 +214,91 @@ const sign_in = async (req, res) => {
             {
               _id: user._id,
               role: user.role,
-              name: user.fristName + " " + user.lastName,              
+              name: user.fristName + " " + user.lastName,
               department: user.department,
-
             },
             "shhhhh"
           );
           res.status(StatusCodes.OK).json({
-            status :true ,
+            status: true,
             token,
             user: {
               name: user.fristName + " " + user.lastName,
-              email: user.email,              
+              email: user.email,
               department: user.department,
+              departmentName: user.department_name,
             },
           });
         } else {
-          res.status(StatusCodes.ACCEPTED).json({ status :false , message: "password is not corrected" });
+          res
+            .status(StatusCodes.ACCEPTED)
+            .json({ status: false, message: "password is not corrected" });
         }
       }
+    }
+  } catch (error) {
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ massage: "error", error });
+  }
+};
+
+const setUserDepartment = async (req, res) => {
+  let { email, departmentName } = req.body;
+  try {
+    if (theUser.role == "admin") {
+      const user = await User.findOne({ email });
+      const department = await Department.findOne({
+        departmentName: departmentName.toLowerCase(),
+      });
+      if (!user) {
+        res
+          .status(StatusCodes.ACCEPTED)
+          .json({ status: false, message: "User Not found" });
+      } else {
+        if (!department) {
+          res
+            .status(StatusCodes.ACCEPTED)
+            .json({ status: false, message: "Department Not found" });
+        } else {
+          user.department = department._id;
+          user.department_name = departmentName;
+          res
+            .status(StatusCodes.CREATED)
+            .json({ status: true, message: " Done successfully" });
+        }
+      }
+    } else {
+      res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ status: false, message: "UNAUTHORIZED" });
+    }
+  } catch (error) {
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ massage: "error", error });
+  }
+};
+
+const setUserRole = async (req, res) => {
+  let { email, role } = req.body;
+  try {
+    if (theUser.role == "admin") {
+      const user = await User.findOne({ email });
+      if (!user) {
+        res
+          .status(StatusCodes.ACCEPTED)
+          .json({ status: false, message: "User Not found" });
+      } else {
+        user.role = role.toLowerCase();
+        res
+          .status(StatusCodes.CREATED)
+          .json({ status: true, message: " Done successfully" });
+      }
+    } else {
+      res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ status: false, message: "UNAUTHORIZED" });
     }
   } catch (error) {
     res
@@ -237,4 +313,7 @@ module.exports = {
   verifyUser,
   UnverifyUser,
   sign_in,
+  setUserRole,
+  setUserDepartment,
+  
 };

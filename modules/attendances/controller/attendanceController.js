@@ -26,9 +26,9 @@ const check_In = async (req, res) => {
       if (today > lastCheckInTimestamp) {
         userAttendance.attendance.push(data);
         await userAttendance.save();
-        res.status(statusCodes.OK).json({ message: "success....You have been signed in for today" });
+        res.status(StatusCodes.OK).json({status:ture , message: "success....You have been signed in for today" });
       } else {
-        res.json({
+        res.status(StatusCodes.ACCEPTED).json({ status:false ,
           message: "error....You have been signed in for today aleady",
         });
       }
@@ -64,27 +64,27 @@ const check_Out =  async(req, res) =>{
         const lastCheckIn = userAttendance.attendance[userAttendance.attendance.length - 1];
         const lastCheckInTimestamp = lastCheckIn.date.toISOString().split("T")[0];
         if (today != lastCheckInTimestamp) {
-          res.status(StatusCodes.ACCEPTED).json({message : "You didn't check in  today"});
+          res.status(StatusCodes.ACCEPTED).json({ status:false ,message : "You didn't check in  today"});
         }
         else{
           if (exit.getHours()>=14  || lastCheckIn.requestToLeave == true ){
             lastCheckIn.exit = exit ;
-            res.status(StatusCodes.ACCEPTED).json({message : "success','You have been successfully check out"});
+            res.status(StatusCodes.ACCEPTED).json({ status:ture ,message : "success','You have been successfully check out"});
           }
           else{
-            res.status(StatusCodes.ACCEPTED).json({message : "You can't leave now"});
+            res.status(StatusCodes.ACCEPTED).json({ status:false , message : "You can't leave now"});
           }
 
         }
       }
       else {
-        res.status(StatusCodes.ACCEPTED).json({message : "error','You do not have an attendance entry "});
+        res.status(StatusCodes.ACCEPTED).json({status:false , message : "error','You do not have an attendance entry "});
   
       }
       
     }
     else {
-      res.status(StatusCodes.ACCEPTED).json({message : "invalied Attendance"});
+      res.status(StatusCodes.ACCEPTED).json({status:false , message : "invalied Attendance"});
 
     }
     

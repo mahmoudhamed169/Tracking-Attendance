@@ -1,5 +1,6 @@
+const isAuthrized = require("../../../common/isAuthrized");
 const validateRequest = require("../../../common/validtateReq");
-const { getAllUsers, verifyUser, UnverifyUser, sign_up, sign_in } = require("../controller/userController");
+const { getAllUsers, verifyUser, UnverifyUser, sign_up, sign_in, setUserRole, setUserDepartment } = require("../controller/userController");
 const router = require("express").Router();
 
 
@@ -11,6 +12,8 @@ router.get("/verifyUser/:token", verifyUser);
 
 router.get("/unverifyUser/:token", UnverifyUser);
 router.post('/signIn' , sign_in)
+router.post('/serRole' , isAuthrized() , setUserRole )
+router.post('/setDepartment' , isAuthrized() , setUserDepartment )
 
 
 

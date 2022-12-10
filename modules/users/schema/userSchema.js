@@ -2,12 +2,13 @@ const mongoose =  require('mongoose') ;
 const bcrypt = require("bcrypt");
 const userSchema = new mongoose.Schema(
     {
-      fristName: { type: String },
+      fristName: { type: String  },
       lastName: { type: String },
       email: { type: String, required: true },
       password: { type: String },      
       department: { type: mongoose.Schema.Types.ObjectID, ref: "departments" },  
-      role: { type: String, required: true },
+      department_name : { type: String },
+      role: { type: String },
       verified: { type: Boolean, default: false },
     },
     {

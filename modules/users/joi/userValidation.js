@@ -1,7 +1,7 @@
 const Joi = require("joi");
 
 module.exports = {
-    singUpSchema: {
+  singUpSchema: {
     body: Joi.object()
       .required()
       .keys({
@@ -14,19 +14,14 @@ module.exports = {
         email: Joi.string().required().email().messages({
           "string.email": "sorry ..please enter valid email",
         }),
-        department: Joi.string(),
-        level: Joi.string(),
-        password : Joi.string().required(),   
-        role : Joi.string().required(),       
-        
+        password: Joi.string().required(),
       }),
   },
 
-
-  singInSchema :{
+  singInSchema: {
     body: Joi.object().required().keys({
-      email:Joi.string().required().email(),
+      email: Joi.string().required().email(),
       password: Joi.string().required(),
-    })
-  }
+    }),
+  },
 };
