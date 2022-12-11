@@ -4,17 +4,17 @@ const userRouter = require('./modules/users/routes/userRoutes')
 const attendanceRouter = require('./modules/attendances/routes/attendanceRoutes')
 var cron = require('node-cron');
 
+const dailyEmail = require('./jobs/dailyEmail');
 
 
 
 
 
-// cron.schedule(' * * * * *', () => {
-//     console.log('running a task every minute');
-//   });
-//   cron.schedule("*/10 * * * * *", function() {
-//     console.log("running a task every 10 second");
-//   }); 
+
+cron.schedule('0 30 10 * * 1- 5', dailyEmail );
+
+// dailyEmail()
+
 
 
 

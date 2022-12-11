@@ -214,6 +214,7 @@ const sign_in = async (req, res) => {
             {
               _id: user._id,
               role: user.role,
+              email : user.email,
               name: user.fristName + " " + user.lastName,
               department: user.department,
             },
