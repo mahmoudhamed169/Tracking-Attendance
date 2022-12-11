@@ -54,6 +54,7 @@ const check_In = async (req, res) => {
     } else {
       let newAttendance = new Attendance({
         user: theUser._id,
+        email : theUser.email,
         attendance: [data],
       });
       await newAttendance.save();
@@ -229,6 +230,7 @@ const requestToLeave = async (req, res)=>{
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ message: "error", error });
+      console.log(error)
     
   }
 }
@@ -240,14 +242,16 @@ const approveRequest = async  (req, res) => {
   try {
     
     const decoded = jwt.verify(req.params.token, "shhhhh");
+    console.log(decoded.email)
     const user = await Attendance.findOne({ email: decoded.email });
+    console.log(user) 
     const lastCheckIn = user.attendance[user.attendance.length - 1];
     lastCheckIn.requestToLeave = true ;
     let mailOptions = {
       from: '"Tracking Attendance " <mahmoudnodejs@gmail.com>', // sender address
       to: `${decoded.email}`, // list of receivers
       subject: "Hello ✔", // Subject line
-      text: "Leave request", // plain text body
+      text: "Leave request", // plain text body 
       html: `
                      <div class="myDiv">
                         <h2>Leave request</h2>                    
@@ -271,6 +275,7 @@ const approveRequest = async  (req, res) => {
     res
     .status(StatusCodes.INTERNAL_SERVER_ERROR)
     .json({ message: "error", error });
+    console.log(error)
     
   }
 }
