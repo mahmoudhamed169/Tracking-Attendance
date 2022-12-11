@@ -189,7 +189,7 @@ const requestToLeave = async (req, res)=>{
   try {
     let {name , email  , reason } = req.body;
     const userAttendance = await Attendance.findOne({ user: theUser._id });
-    const token = jwt.sign({ user }, "shhhhh");
+    const token = jwt.sign({ email }, "shhhhh");
     let yourDate = new Date();
     const today = yourDate.toISOString().split("T")[0];
     const lastCheckIn = userAttendance.attendance[userAttendance.attendance.length - 1];
@@ -346,5 +346,6 @@ module.exports = {
   verifyAttendance,
   unVerifyAttendance,
   approveRequest,
-  rejectRequest
+  rejectRequest,
+  requestToLeave,
 };
