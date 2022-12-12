@@ -35,7 +35,7 @@ const addNewDepartment = async (req, res) => {
         if(!user){res.status(StatusCodes.CREATED).json({ status :false ,message: "invalid email" });}
         let newDepartment = new Department({ departmentName : departmentName.toLowerCase() , The_Head : user._id });
         await newDepartment.save();
-        res.status(StatusCodes.CREATED).json({status :false , message: "Added success", Department: newDepartment });
+        res.status(StatusCodes.CREATED).json({status :true , message: "Added success", Department: newDepartment });
       }
     } catch (error) {
       res
