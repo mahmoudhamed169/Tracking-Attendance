@@ -308,6 +308,45 @@ const setUserRole = async (req, res) => {
   }
 };
 
+
+
+const getAllEmplyee = async (req, res) => {
+  try {
+    if((theUser.role == "admin")){
+      const users = await User.find({role :"employee"}).populate("department").select("-password");
+      res.status(statusCodes.OK).json({status:true, message: "allUsers", users });
+    }
+    else{res.status(StatusCodes.UNAUTHORIZED).json({ message: "UNAUTHORIZED" });}
+    
+  } catch (error) {
+    res
+    .status(StatusCodes.INTERNAL_SERVER_ERROR)
+    .json({ message: "error", error });
+  console.log(error);
+    
+  }
+
+};
+
+
+const getAllHead = async (req, res) => {
+  try {
+    if((theUser.role == "admin")){
+      const users = await User.find({role :"headofdepartment"}).populate("department").select("-password");
+      res.status(statusCodes.OK).json({status:true, message: "allUsers", users });
+    }
+    else{res.status(StatusCodes.UNAUTHORIZED).json({ message: "UNAUTHORIZED" });}
+    
+  } catch (error) {
+    res
+    .status(StatusCodes.INTERNAL_SERVER_ERROR)
+    .json({ message: "error", error });
+  console.log(error);
+    
+  }
+
+};
+
 module.exports = {
   getAllUsers,
   sign_up,
@@ -316,5 +355,7 @@ module.exports = {
   sign_in,
   setUserRole,
   setUserDepartment,
+  getAllHead,
+  getAllEmplyee
   
 };

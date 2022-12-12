@@ -8,7 +8,7 @@ const attendanceSchema = new mongoose.Schema(
       {
         date: { type: Date },
         userName: { type: String },
-        userEmail : {type: String},
+        userEmail : {type: String},        
         entry: { type: Date },
         exit: { type: Date },
         requestToLeave :{type: Boolean , default: false}
