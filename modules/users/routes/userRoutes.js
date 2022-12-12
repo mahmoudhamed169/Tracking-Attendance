@@ -12,7 +12,7 @@ router.get("/verifyUser/:token", verifyUser);
 
 router.get("/unverifyUser/:token", UnverifyUser);
 router.post('/signIn' , sign_in)
-router.post('/serRole' , isAuthrized() , setUserRole )
+router.post('/setRole' , isAuthrized() , setUserRole )
 router.post('/setDepartment' , isAuthrized() , setUserDepartment )
 router.get('/employee' , isAuthrized() , getAllEmplyee );
 router.get('/heads' , isAuthrized() , getAllHead)
