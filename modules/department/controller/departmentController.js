@@ -1,14 +1,14 @@
 const Department = require("../model/departmentModel");
 const { StatusCodes } = require("http-status-codes");
 
-const Department = require("../model/departmentModel");
-const { StatusCodes } = require("http-status-codes");
+
+
 const User = require("../../users/model/userModel");
 
 const getAllDepartment = async (req, res) => {
   try {
     if (theUser.role == "admin") {
-      const departments = await Department.findALL({}).populate("The_Head");
+      const departments = await Department.find({}).populate("The_Head");
       res.status(StatusCodes.ACCEPTED).json({ status:true ,message: "All Department", data: departments });
     } else {
       res.status(StatusCodes.UNAUTHORIZED).json({ message: "UNAUTHORIZED" });

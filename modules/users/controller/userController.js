@@ -305,6 +305,7 @@ const setUserRole = async (req, res) => {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ massage: "error", error });
+     
   }
 };
 
@@ -314,7 +315,7 @@ const getAllEmplyee = async (req, res) => {
   try {
     if((theUser.role == "admin")){
       const users = await User.find({role :"employee"}).populate("department").select("-password");
-      res.status(statusCodes.OK).json({status:true, message: "allUsers", users });
+      res.status(StatusCodes.OK).json({status:true, message: "allUsers", users });
     }
     else{res.status(StatusCodes.UNAUTHORIZED).json({ message: "UNAUTHORIZED" });}
     
@@ -333,7 +334,7 @@ const getAllHead = async (req, res) => {
   try {
     if((theUser.role == "admin")){
       const users = await User.find({role :"headofdepartment"}).populate("department").select("-password");
-      res.status(statusCodes.OK).json({status:true, message: "allUsers", users });
+      res.status(StatusCodes.OK).json({status:true, message: "allUsers", users });
     }
     else{res.status(StatusCodes.UNAUTHORIZED).json({ message: "UNAUTHORIZED" });}
     
