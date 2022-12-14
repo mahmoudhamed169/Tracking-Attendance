@@ -262,11 +262,12 @@ const setUserDepartment = async (req, res) => {
             .status(StatusCodes.ACCEPTED)
             .json({ status: false, message: "Department Not found" });
         } else {
-          user.department = department._id;
-          user.department_name = departmentName;
+          await User.updateOne({email} , { department  : department._id , department_name : departmentName})
+          // user.department = department._id;
+          // user.department_name = departmentName;
           res
             .status(StatusCodes.CREATED)
-            .json({ status: true, message: " Done successfully" });
+            .json({ status: true, message: " Done successfully"  });
         }
       }
     } else {
@@ -291,7 +292,7 @@ const setUserRole = async (req, res) => {
           .status(StatusCodes.ACCEPTED)
           .json({ status: false, message: "User Not found" });
       } else {
-        user.role = role.toLowerCase();
+        await User.updateOne({email} , { role : role.toLowerCase()})
         res
           .status(StatusCodes.CREATED)
           .json({ status: true, message: " Done successfully" });
